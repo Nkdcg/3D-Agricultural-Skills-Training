@@ -1,0 +1,84 @@
+Using UnityEngine; 
+ 
+Public class Crop : MonoBehaviour 
+{ 
+    Public enum GrowthStage 
+    { 
+        Seedling, 
+        Vegetative, 
+        Flowering, 
+        Ripening, 
+        Harvestable 
+    } 
+ 
+    Public GrowthStage currentStage = GrowthStage.Seedling; 
+    Public float growthTimeSeedling = 10f; 
+    Public float growthTimeVegetative = 20f; 
+    Public float growthTimeFlowering = 15f; 
+    Public float growthTimeRipening = 10f; 
+ 
+    Private float growthTimer = 0f; 
+ 
+    Public bool isWatered = false; 
+    Public float waterDecayRate = 0.1f; // Adjust the decay rate as needed 
+ 
+    Void Update() 
+    { 
+        // Increment growth timer 
+        growthTimer += Time.deltaTime; 
+ 
+        // Check if it’s time to transition to the next growth stage 
+        Switch (currentStage) 
+        { 
+            Case GrowthStage.Seedling: 
+                If (growthTimer >= growthTimeSeedling) 
+                { 
+                    currentStage = GrowthStage.Vegetative; 
+                    // Apply visual changes to represent growth stage transition 
+                } 
+                Break; 
+            Case GrowthStage.Vegetative: 
+                If (growthTimer >= growthTimeVegetative) 
+                { 
+36  
+                    currentStage = GrowthStage.Flowering; 
+                    // Apply visual changes to represent growth stage transition 
+                } 
+                Break; 
+            Case GrowthStage.Flowering: 
+                If (growthTimer >= growthTimeFlowering) 
+                { 
+                    currentStage = GrowthStage.Ripening; 
+                    // Apply visual changes to represent growth stage transition 
+                } 
+                Break; 
+            Case GrowthStage.Ripening: 
+                If (growthTimer >= growthTimeRipening) 
+                { 
+                    currentStage = GrowthStage.Harvestable; 
+                    // Apply visual changes to represent growth stage transition 
+                } 
+                Break; 
+            Case GrowthStage.Harvestable: 
+                // Crop is fully grown and ready for harvest 
+                Break; 
+        } 
+ 
+        // Update water status 
+        If (!isWatered) 
+        { 
+            // Decrease growth timer when not watered 
+            growthTimer -= waterDecayRate * Time.deltaTime; 
+ 
+            // Ensure growth timer does not go below zero 
+            growthTimer = Mathf.Max(0f, growthTimer); 
+        } 
+    } 
+ 
+    // Method to water the crop 
+    Public void WaterCrop() 
+    { 
+        isWatered = true; 
+        // Optionally, play a water sound effect or show visual feedback 
+    } 
+}
